@@ -93,7 +93,7 @@ def test1():
             run(r"Debug\app.exe")
     else:
         with chdir("build"):
-            run("cmake .. -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=conan_provider.cmake -DCMAKE_BUILD_TYPE=Release")
+            run("cmake .. -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=conan_provider.cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++")
             run("cmake --build .")
             run("./app")
         # TODO: install ninja on github actions
