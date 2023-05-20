@@ -1,25 +1,19 @@
 set(CONAN_MINIMUM_VERSION 2.0.2)
 
 
-function(detect_os OS)
+function(detect_os OS OS_VERSION)
     # it could be cross compilation
     message(STATUS "CMake-Conan: cmake_system_name=${CMAKE_SYSTEM_NAME}")
     if(CMAKE_SYSTEM_NAME AND NOT CMAKE_SYSTEM_NAME STREQUAL "Generic")
         if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
             set(${OS} Macos PARENT_SCOPE)
+            message(STATUS "CMake-Conan: cmake_osx_deployment_target=${CMAKE_OSX_DEPLOYMENT_TARGET}")
+            set(${OS_VERSION} ${CMAKE_OSX_DEPLOYMENT_TARGET} PARENT_SCOPE)
         elseif(${CMAKE_SYSTEM_NAME} STREQUAL "QNX")
             set(${OS} Neutrino PARENT_SCOPE)
         else()
             set(${OS} ${CMAKE_SYSTEM_NAME} PARENT_SCOPE)
         endif()
-    endif()
-endfunction()
-
-
-function(detect_os_version OS_VERSION)
-    if(APPLE)
-        message(STATUS "CMake-Conan: cmake_osx_deployment_target=${CMAKE_OSX_DEPLOYMENT_TARGET}")
-        set(${OS_VERSION} ${CMAKE_OSX_DEPLOYMENT_TARGET} PARENT_SCOPE)
     endif()
 endfunction()
 
@@ -81,8 +75,7 @@ endfunction()
 
 
 function(detect_host_profile output_file)
-    detect_os(MYOS)
-    detect_os_version(MYOS_VERSION)
+    detect_os(MYOS MYOS_VERSION)
     detect_compiler(MYCOMPILER MYCOMPILER_VERSION)
     detect_cxx_standard(MYCXX_STANDARD)
     detect_build_type(MYBUILD_TYPE)
